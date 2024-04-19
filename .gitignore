@@ -16,3 +16,4 @@ docs/
 .idea
 out
 cache
+src/sample_demo/artifacts/*
