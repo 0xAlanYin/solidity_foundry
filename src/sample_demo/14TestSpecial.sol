@@ -35,5 +35,11 @@ contract TestSpecial {
         // block.blockhash(blockNumber);
         block.timestamp;
         tx.origin;
+        
+        msg.sender;
+        msg.value;
+        msg.data;
+        msg.gas;
+        msg.sig;
     }
 }
