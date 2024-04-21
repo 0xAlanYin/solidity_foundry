@@ -15,6 +15,21 @@ contract TestStruct {
     }
 
     function getFunder(uint256 id) public view returns (address, uint256) {
-        return (funders[id].addr,funders[id].amount);
+        return (funders[id].addr, funders[id].amount);
+    }
+
+    struct Person {
+        address account;
+        bool isMan;
+        uint8 age;
+    }
+
+    function test() public {
+        Person memory p1 = Person(address(0x0), false, 19);
+        Person memory p2 = Person({
+            account: address(0x0),
+            isMan: false,
+            age: 19
+        });
     }
 }
