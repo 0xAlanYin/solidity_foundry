@@ -14,7 +14,7 @@ contract TestArray {
 
     function name(uint len) public pure {
         string[4] memory strArr = ["this", "is", "string", "array"];
-        uint[4] memory intArr = new uint[](len);
+        // uint[4] memory intArr = new uint[](len);
     }
 
     function addElement(uint x) public {

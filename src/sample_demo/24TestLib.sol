@@ -12,7 +12,7 @@ library SafeMath {
 contract TestLib {
     using SafeMath for uint;
 
-    function add(uint x, uint y) public pure returns (uint) {
+    function add(uint x, uint y) public returns (uint) {
         return x.add(y);
     }
 }

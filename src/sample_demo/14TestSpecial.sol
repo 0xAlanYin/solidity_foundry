@@ -31,15 +31,15 @@ contract TestSpecial {
     }
 
     function name() view public {
-        block.number;
-        // block.blockhash(blockNumber);
-        block.timestamp;
-        tx.origin;
+        // block.number;
+        // // block.blockhash(blockNumber);
+        // block.timestamp;
+        // tx.origin;
         
-        msg.sender;
-        msg.value;
-        msg.data;
-        msg.gas;
-        msg.sig;
+        // msg.sender;
+        // msg.value;
+        // msg.data;
+        // msg.gas;
+        // msg.sig;
     }
 }
