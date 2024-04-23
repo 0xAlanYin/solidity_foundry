@@ -26,13 +26,9 @@ contract MyNFTMarketTest is Test {
           myERC721.approve(address(myNFTMarket), 1);
           myNFTMarket.list(1, 1 ether);
           
-        //   vm.startPrank(bob);
-        //   myToken.approve(address(myNFTMarket), 100 ether);
-        //   myNFTMarket.buyNFT(1);
-        //   vm.stopPrank();
-
           vm.startPrank(bob);
-          myNFTMarket.buyNFT2(1);
+          myToken.approve(address(myNFTMarket), 100 ether);
+          myNFTMarket.buyNFT(1);
           vm.stopPrank();
     }
 

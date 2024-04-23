@@ -16,6 +16,6 @@ contract MyTokenTest is Test {
     }
 
     function testTransferCallback() public {
-        token.transfer(address(tokenBank),  1 ether);
+        token.transferWithCallback(address(tokenBank), 1 ether);
     }
 }

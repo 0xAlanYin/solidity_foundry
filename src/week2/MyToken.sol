@@ -17,15 +17,6 @@ contract MyToken is ERC20 {
     }
 
     // 扩展 ERC20 合约，使其具备在转账的时候，如果目标地址是合约的话，调用目标地址的 tokensReceived() 方法
-    function transferFrom(
-        address from,
-        address to,
-        uint256 value
-    ) public virtual override returns (bool) {
-        transferWithCallback(msg.sender, value);
-        return super.transferFrom(from, to, value);
-    }
-
     function transferWithCallback(address recipient, uint256 amount) public {
         // 如果是合约，则调用tokenReceived
         if (isContract(recipient)) {
@@ -35,6 +26,7 @@ contract MyToken is ERC20 {
             );
             require(success, "No token received");
         }
+        return _transfer(msg.sender, recipient, amount);
     }
 
     function isContract(address addr) internal view returns (bool) {
