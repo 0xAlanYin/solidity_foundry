@@ -24,8 +24,8 @@ contract TokenBank is ITokenReceiver {
 
     // tokensReceived 回调实现
     function tokenReceived(address recipient, uint256 amount) external returns (bool) {
-        require(msg.sender == recipient, "no permission");
-        deposits[msg.sender] += amount;
+        require(msg.sender == token, "no permission");
+        deposits[recipient] += amount;
         return true;
     }
 }

@@ -33,11 +33,17 @@ contract MyNFTMarket {
      // approve before
     // buyNFT：实现购买 NFT 功能，用户转入所定价的 token 数量，获得对应的 NFT
     function buyNFT(uint256 tokenId) public {
-        // 报价必须大于等于售价
-        // require(amount >= tokenId2Price[tokenId], "amount must gt price");
 
         // 转移token: 买方给市场授权
         IERC20(erc20Token).transferFrom(msg.sender, tokenId2Seller[tokenId], tokenId2Price[tokenId]);
+
+        // 转移nft: 卖方给市场授权
+        IERC721(erc721Token).safeTransferFrom(tokenId2Seller[tokenId], msg.sender, tokenId);
+    }
+
+     function buyNFT2(uint256 tokenId) public {
+        // 转移token
+        MyToken(erc20Token).transferWithCallback(tokenId2Seller[tokenId],tokenId2Price[tokenId]);
 
         // 转移nft: 卖方给市场授权
         IERC721(erc721Token).safeTransferFrom(tokenId2Seller[tokenId], msg.sender, tokenId);

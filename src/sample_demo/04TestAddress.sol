@@ -13,6 +13,7 @@ contract TestAddress {
             // 调⽤ x 的transfer ⽅法: 向 x 转10 wei
             x.transfer(10);
         }
+        
     }
 
     // 给⼀个合约地址转账，即上⾯代码 x 是合约地址时，合约的receive函数或fallback函数会随着transfer调⽤⼀起执⾏

@@ -22,13 +22,17 @@ contract MyNFTMarketTest is Test {
         myToken.transfer(bob, 100 ether);
     }
 
-    function test_list() public {
+    function test() public {
           myERC721.approve(address(myNFTMarket), 1);
           myNFTMarket.list(1, 1 ether);
           
+        //   vm.startPrank(bob);
+        //   myToken.approve(address(myNFTMarket), 100 ether);
+        //   myNFTMarket.buyNFT(1);
+        //   vm.stopPrank();
+
           vm.startPrank(bob);
-          myToken.approve(address(myNFTMarket), 100 ether);
-          myNFTMarket.buyNFT(1);
+          myNFTMarket.buyNFT2(1);
           vm.stopPrank();
     }
 
