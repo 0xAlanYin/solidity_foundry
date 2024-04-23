@@ -40,12 +40,4 @@ contract MyNFTMarket {
         // 转移nft: 卖方给市场授权
         IERC721(erc721Token).safeTransferFrom(tokenId2Seller[tokenId], msg.sender, tokenId);
     }
-
-     function buyNFT2(uint256 tokenId) public {
-        // 转移token
-        MyToken(erc20Token).transferWithCallback(tokenId2Seller[tokenId],tokenId2Price[tokenId]);
-
-        // 转移nft: 卖方给市场授权
-        IERC721(erc721Token).safeTransferFrom(tokenId2Seller[tokenId], msg.sender, tokenId);
-    }
 }
