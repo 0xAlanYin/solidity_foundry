@@ -23,21 +23,40 @@ contract MyNFTMarket {
         erc721Token = _erc721Token;
     }
 
+    function onERC721Received(
+        address operator,
+        address from,
+        uint256 tokenId,
+        bytes calldata data
+    ) external returns (bytes4) {
+        return this.onERC721Received.selector;
+    }
+
     // list: 实现上架功能，NFT 持有者可以设定一个价格（需要多少个 Token 购买该 NFT）并上架 NFT 到 NFT 市场
     function list(uint256 tokenId, uint256 price) public {
-        require(IERC721(erc721Token).ownerOf(tokenId) == msg.sender, "not owner");
+        require(
+            IERC721(erc721Token).ownerOf(tokenId) == msg.sender,
+            "not owner"
+        );
         tokenId2Price[tokenId] = price;
         tokenId2Seller[tokenId] = msg.sender;
     }
 
-     // approve before
+    // approve before
     // buyNFT：实现购买 NFT 功能，用户转入所定价的 token 数量，获得对应的 NFT
     function buyNFT(uint256 tokenId) public {
-
         // 转移token: 买方给市场授权
-        IERC20(erc20Token).transferFrom(msg.sender, tokenId2Seller[tokenId], tokenId2Price[tokenId]);
+        IERC20(erc20Token).transferFrom(
+            msg.sender,
+            tokenId2Seller[tokenId],
+            tokenId2Price[tokenId]
+        );
 
         // 转移nft: 卖方给市场授权
-        IERC721(erc721Token).safeTransferFrom(tokenId2Seller[tokenId], msg.sender, tokenId);
+        IERC721(erc721Token).safeTransferFrom(
+            tokenId2Seller[tokenId],
+            msg.sender,
+            tokenId
+        );
     }
 }

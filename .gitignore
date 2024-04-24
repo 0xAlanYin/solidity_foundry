@@ -19,3 +19,6 @@ cache
 src/sample_demo/artifacts/*
 lib/*
 .states/*
+
+lib
+.states

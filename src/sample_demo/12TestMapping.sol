@@ -17,4 +17,6 @@ contract TestMapping {
     function get(address addr) public view returns (uint) {
         return balances[addr];
     }
+ 
+    mapping(address => mapping(address => uint256)) testMapping;
 }
