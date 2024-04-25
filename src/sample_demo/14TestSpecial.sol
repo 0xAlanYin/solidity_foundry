@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 // API - 全局变量及函数
 // • 区块和交易属性

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.0;
+pragma solidity 0.8.25;
 
 contract TestStruct {
     struct Funder {
@@ -17,19 +17,56 @@ contract TestStruct {
     function getFunder(uint256 id) public view returns (address, uint256) {
         return (funders[id].addr, funders[id].amount);
     }
+}
 
+contract TestStruct2 {
+    struct Student {
+        string name;
+        uint8 age;
+        mapping(string => uint) scores;
+        // Student child; // 错误的写法，不能引用自身
+    }
+
+    struct School {
+        Student[] students;
+        mapping(uint => Student) numbers;
+    }
+
+    // 2.结构体变量声明与赋值
+    // 2.1 仅声明变量而不赋值，此时会使用默认值创建结构体变量
     struct Person {
         address account;
-        bool isMan;
+        string name;
         uint8 age;
     }
 
-    function test() public {
-        Person memory p1 = Person(address(0x0), false, 19);
-        Person memory p2 = Person({
+    Person person1;
+
+    // 2.2 按成员顺序（结构体声明时的顺序）赋值
+    Person person2 = Person(address(0x0), "zhangsan", 18);
+
+    function name() public pure returns (Person memory) {
+        Person memory person3 = Person(address(0x0), "zhangsan", 18);
+        return person3;
+    }
+
+    // 2.3 具名方式赋值
+    Person person4 = Person({account: address(0x0), name: "zhangsan", age: 18});
+
+    function name2() public pure returns (Person memory) {
+        Person memory person5 = Person({
             account: address(0x0),
-            isMan: false,
-            age: 19
+            name: "zhangsan",
+            age: 18
         });
+        return person5;
+    }
+
+    Person person6;
+    // 2.4 以更新成员变量的方式给结构体变量赋值
+    function updatePerson() public {
+        person6.account = msg.sender;
+        person6.age = 18;
+        person6.name = "zhangsan";
     }
 }

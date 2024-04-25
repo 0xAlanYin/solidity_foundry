@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 // 函数：
 // function + 函数名(参数列表) + 可见性 + 状态可变性(可多个) + 返回值

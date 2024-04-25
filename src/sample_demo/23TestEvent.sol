@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 // Event 事件
 // • 合约与外部世界的重要接⼝，通知外部世界链上状态的变化

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 import "./MyToken.sol";
 
@@ -28,5 +28,9 @@ contract TokenBank is ITokenReceiver {
         require(msg.sender == token, "no permission");
         deposits[recipient] += amount;
         return true;
+    }
+
+    function balanceOf(address user) public view returns (uint256) {
+        return deposits[user];
     }
 }

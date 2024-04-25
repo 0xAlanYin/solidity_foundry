@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 // 使⽤public 、private、external、internal 可⻅性关键字来控制变量和函数是否可以被外部使⽤。
 // - public：内部、外部

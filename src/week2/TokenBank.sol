@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 import "./BaseERC20.sol";
 
@@ -21,7 +21,11 @@ contract TokenBank {
 
     function withdraw(uint256 amount) public {
         address owner = msg.sender;
-        deposits[owner] -= amount;
         erc20.transfer(owner, amount);
+        deposits[owner] -= amount;
+    }
+
+    function balanceOf(address user) public view returns (uint256) {
+        return deposits[user];
     }
 }

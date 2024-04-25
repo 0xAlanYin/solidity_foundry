@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 // 数组的使⽤要特别注意 Gas 问题
 contract TestBadCase {

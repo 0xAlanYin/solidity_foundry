@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSE
-pragma solidity >0.8.0;
+pragma solidity 0.8.25;
 
 contract TestOverflow {
     function add1() public pure returns (uint8) {

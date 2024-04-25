@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 // 错误处理
 // • 在程序发⽣错误时的处理⽅式：EVM通过回退状态来处理错误的，以便保证状态修改的事务性

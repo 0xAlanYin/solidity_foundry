@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >0.8.0;
+pragma solidity 0.8.25;
 
 // Solidity 使⽤地址类型来表示⼀个账号，地址类型有两种形式
 // • address：⼀个20字节的值。
 // • address payable：表示可⽀付地址，可调⽤transfer和send。
 // 类型转换：address payable ap = payable(addr);
 contract TestAddress {
-    function testTransfer(address payable x) public {
+    function myTransfer(address payable x) public {
         // 合约转换为地址类型
         address myAdress = address(this);
         if (myAdress.balance >= 10) {
@@ -32,7 +32,7 @@ contract TestAddress {
 
     fallback() external payable {}
 
-    function test() public {
+    function myTest() public {
         address addr = address(this);
         // 返回地址的余额， 余额以wei为单位 (uint256)
         addr.balance;
