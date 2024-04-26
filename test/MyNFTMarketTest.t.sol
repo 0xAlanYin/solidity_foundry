@@ -6,6 +6,7 @@ import {Test, console} from "forge-std/Test.sol";
 import {MyToken} from "../src/week2/MyToken.sol";
 import {MyERC721} from "../src/week2/MyERC721.sol";
 import {MyNFTMarket} from "../src/week2/MyNFTMarket.sol";
+import "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
 
 contract MyNFTMarketTest is Test {
     MyNFTMarket public myNFTMarket;
@@ -25,7 +26,7 @@ contract MyNFTMarketTest is Test {
 
     function testList_success() public {
         uint256 tokenId = 1;
-        _list(tokenId,bob, myNFTMarket);
+        _list(tokenId, bob, myNFTMarket);
 
         uint256 gotPrice = myNFTMarket.tokenId2Price(tokenId);
         assertEq(100, gotPrice, "want 100,but failed ");
@@ -47,8 +48,7 @@ contract MyNFTMarketTest is Test {
 
     function testBuyNFT_success() public {
         uint256 tokenId = 1;
-        _list(tokenId,bob, myNFTMarket);
-
+        _list(tokenId, bob, myNFTMarket);
 
         myToken.transfer(cindy, 1000);
         vm.startPrank(cindy);
@@ -65,14 +65,15 @@ contract MyNFTMarketTest is Test {
         vm.startPrank(seller);
         myERC721.isApprovedForAll(seller, address(_myNFTMarket));
         myERC721.approve(address(_myNFTMarket), tokenId);
-         
+
         _myNFTMarket.list(1, 100);
+
         vm.stopPrank();
     }
 
     function testBuyNFT_faild_when_allow_token_not_enough() public {
-         uint256 tokenId = 1;
-        _list(tokenId,bob, myNFTMarket);
+        uint256 tokenId = 1;
+        _list(tokenId, bob, myNFTMarket);
 
         myToken.transfer(cindy, 1000);
         vm.startPrank(cindy);
@@ -80,6 +81,10 @@ contract MyNFTMarketTest is Test {
         vm.expectRevert(
             abi.encodeWithSignature("ERC20InsufficientAllowance(address,uint256,uint256)", address(myNFTMarket), 1, 100)
         );
+        vm.expectRevert(
+            abi.encodeWithSelector(IERC20Errors.ERC20InsufficientAllowance.selector, address(myNFTMarket), 1, 100)
+        );
+
         myNFTMarket.buyNFT(tokenId);
         vm.stopPrank();
     }
@@ -102,11 +107,10 @@ contract MyNFTMarketTest is Test {
         vm.stopPrank();
     }
 
-
     function testTransferCallback_market_buy_nft_success() public {
-         uint256 tokenId = 1;
-        _list(tokenId,bob, myNFTMarket);
-        
+        uint256 tokenId = 1;
+        _list(tokenId, bob, myNFTMarket);
+
         myToken.transfer(cindy, 100);
         vm.startPrank(cindy);
         bytes memory data = abi.encode(tokenId);
@@ -114,5 +118,4 @@ contract MyNFTMarketTest is Test {
         assertEq(true, success);
         vm.stopPrank();
     }
-
 }

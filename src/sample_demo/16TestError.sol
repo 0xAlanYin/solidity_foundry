@@ -9,7 +9,7 @@ pragma solidity 0.8.25;
 contract TestError {
     address public owner;
 
-    uint x;
+    uint256 x;
 
     constructor() {
         owner = msg.sender;
@@ -19,11 +19,14 @@ contract TestError {
 
     error OtherError(string message);
 
-    function withdraw(uint amount) public payable {
+    function withdraw(uint256 amount) public payable {
+        // 推荐使用第一种形式，自定义错误的方式来触发，因为只需要使用 4 个字节的编码就可以描述错误，比较使用解释性的字符串消耗更少的GAS。
+        // 形式1:
         if (msg.sender != owner) revert NotOwner(); // 23388
-
+        // 形式2:
         // if (msg.sender != owner) revert OtherError("err msg");
 
+        //功能上与上面等价，但是形式1消耗更少的 gas 费用
         require(msg.sender == owner, "Not owner 00000000000000"); // 23642
 
         x += 1;
