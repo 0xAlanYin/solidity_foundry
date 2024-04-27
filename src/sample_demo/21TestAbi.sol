@@ -2,21 +2,21 @@
 pragma solidity 0.8.25;
 
 contract Counter {
-    uint public count;
+    uint256 public count;
     address public addr;
 
     constructor() {
         count = 0;
     }
 
-    function func1(uint param1, string memory param2) public {
+    function func1(uint256 param1, string memory param2) public {
         count += param1;
         string memory s = param2;
         addr = msg.sender;
     }
 
     function encodeWithSignature() public pure returns (bytes memory result) {
-        uint param1 = 1;
+        uint256 param1 = 1;
         string memory param2 = "aaaa";
         return abi.encodeWithSignature("func1(uint,string)", param1, param2);
     }
@@ -27,14 +27,9 @@ contract Counter {
 
     // abi.encodeWithSelector 函数用于根据函数选择器（函数签名的哈希值）生成对应的函数调用数据。
     function encodeWithSelector() public pure returns (bytes memory result) {
-        uint param1 = 1;
+        uint256 param1 = 1;
         string memory param2 = "aaaa";
-        return
-            abi.encodeWithSelector(
-                bytes4(keccak256("func1(uint,string)")),
-                param1,
-                param2
-            );
+        return abi.encodeWithSelector(bytes4(keccak256("func1(uint,string)")), param1, param2);
     }
 
     function encodeWithSelector2() public pure returns (string memory result) {
@@ -55,13 +50,13 @@ contract TestAbi {
     }
 
     function call3(address counter, bytes memory paload) public {
-        (bool success, ) = counter.call(paload); // 0x06661abd
+        (bool success,) = counter.call(paload); // 0x06661abd
         require(success, "want success,got failed");
     }
 
     function call4(address counter) public {
         bytes memory methodData = abi.encodeWithSignature("count()");
-        (bool success, ) = counter.call(methodData);
+        (bool success,) = counter.call(methodData);
         require(success, "want success,got failed");
     }
 }
@@ -77,5 +72,5 @@ contract Transfer {
         // addr.call{value: msg.value}("");
     }
 
-     receive() external payable {}
+    receive() external payable {}
 }

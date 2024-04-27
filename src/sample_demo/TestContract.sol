@@ -2,13 +2,13 @@
 pragma solidity 0.8.25;
 
 contract Hello {
-    function sayHi() public pure returns (uint) {
+    function sayHi() public pure returns (uint256) {
         return 10;
     }
 }
 
 contract HelloCreator {
-    uint public x;
+    uint256 public x;
     Hello public hello;
 
     function createHello() public returns (address) {
@@ -16,7 +16,7 @@ contract HelloCreator {
         return address(hello);
     }
 
-    function callHi() public view returns (uint) {
+    function callHi() public view returns (uint256) {
         return hello.sayHi();
     }
 }

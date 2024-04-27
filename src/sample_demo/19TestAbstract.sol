@@ -2,24 +2,25 @@
 pragma solidity 0.8.25;
 
 abstract contract A {
-    uint public a;
-    function add(uint x) public virtual;
+    uint256 public a;
+
+    function add(uint256 x) public virtual;
 }
 
 contract B is A {
-    uint public b;
+    uint256 public b;
 
     constructor() {
         b = 1;
     }
 
-    function add(uint x) public virtual override {
+    function add(uint256 x) public virtual override {
         b += x;
     }
 }
 
 contract C is B {
-    function add(uint x) public override {
+    function add(uint256 x) public override {
         super.add(x);
     }
 }

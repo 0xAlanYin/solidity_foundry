@@ -154,7 +154,9 @@ contract MyNFTMarketTest is Test {
 
         myToken.transfer(cindy, 10);
         vm.startPrank(cindy);
-        vm.expectRevert(abi.encodeWithSignature("ERC20InsufficientBalance(address,uint256,uint256)", address(cindy), 10, 100));
+        vm.expectRevert(
+            abi.encodeWithSignature("ERC20InsufficientBalance(address,uint256,uint256)", address(cindy), 10, 100)
+        );
         bytes memory data = abi.encode(tokenId);
         myToken.transferWithCallback(address(myNFTMarket), 100, data);
         vm.stopPrank();

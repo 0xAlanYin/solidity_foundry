@@ -2,20 +2,20 @@
 pragma solidity 0.8.25;
 
 contract TestPayable {
-    event Receiced(address, uint);
+    event Receiced(address, uint256);
 
     receive() external payable {
         emit Receiced(msg.sender, msg.value);
     }
 
-    function safeTransfer(address to, uint amount) public {
-        (bool success, ) = to.call{value: amount}(new bytes(0));
+    function safeTransfer(address to, uint256 amount) public {
+        (bool success,) = to.call{value: amount}(new bytes(0));
         require(success, "Transfer failed");
     }
 
-    uint public x;
+    uint256 public x;
 
-    function unSafeTransfer(address payable to, uint amount) public {
+    function unSafeTransfer(address payable to, uint256 amount) public {
         x = 10;
         to.transfer(amount);
     }
@@ -25,8 +25,8 @@ contract TestPayable2 {
     // 除了纯转账外，所有的调用都会调用这个函数
     // 因为除了receive函数外，没有其他的函数
     // 任何对合约非空calldata调用会执行回退函数(即使是调用函数附加以太)
-    uint public x;
-    uint public y;
+    uint256 public x;
+    uint256 public y;
 
     receive() external payable {
         x = 1;
@@ -41,7 +41,7 @@ contract TestPayable2 {
 
 contract Caller {
     function callTest(address addr) public {
-        (bool success, ) = addr.call(abi.encodeWithSignature("nonExist()"));
+        (bool success,) = addr.call(abi.encodeWithSignature("nonExist()"));
         require(success, "failed");
         //  test.x结果变成 == 1
         // address(test)不允许直接调用send, 因为test没有payable回退函数
@@ -51,14 +51,10 @@ contract Caller {
     }
 
     function callTestPayable(TestPayable2 test) public {
-        (bool success, ) = address(test).call(
-            abi.encodeWithSignature("nonExistingFunction()")
-        );
+        (bool success,) = address(test).call(abi.encodeWithSignature("nonExistingFunction()"));
         require(success);
         // test.x结果为 1，test.y结果为0
-        (success, ) = address(test).call{value: 1}(
-            abi.encodeWithSignature("nonExistingFunction()")
-        );
+        (success,) = address(test).call{value: 1}(abi.encodeWithSignature("nonExistingFunction()"));
 
         require(success);
         // test.x结果为1，test.y结果为1

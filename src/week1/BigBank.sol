@@ -10,6 +10,7 @@ interface IBigBank {
 contract Ownable {
     address public owner;
     IBigBank bigBank;
+
     constructor() {
         owner = msg.sender;
     }
@@ -29,7 +30,7 @@ contract Ownable {
 
     receive() external payable {}
 
-    function getBalance() public view returns (uint) {
+    function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
 }
@@ -45,14 +46,11 @@ contract BigBank is Bank {
 
     // 存款金额 >0.001 ether
     modifier validMinDeposit() {
-        require(
-            msg.value > minDepositAmount,
-            "min deposit must great than 0.001 ether"
-        );
+        require(msg.value > minDepositAmount, "min deposit must great than 0.001 ether");
         _;
     }
 
-    receive() external virtual override payable validMinDeposit {
+    receive() external payable virtual override validMinDeposit {
         balances[msg.sender] = balances[msg.sender] + msg.value;
         updateTop3User(msg.sender);
     }

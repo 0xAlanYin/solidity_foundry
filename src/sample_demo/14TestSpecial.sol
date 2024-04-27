@@ -16,7 +16,7 @@ pragma solidity 0.8.25;
 // • tx.origin (address payable): 交易发起者（完全的调⽤链）
 contract TestSpecial {
     address public owner;
-    uint deposits;
+    uint256 deposits;
 
     constructor() {
         owner = msg.sender;
@@ -30,12 +30,12 @@ contract TestSpecial {
         deposits += msg.value;
     }
 
-    function name() view public {
+    function name() public view {
         // block.number;
         // // block.blockhash(blockNumber);
         // block.timestamp;
         // tx.origin;
-        
+
         // msg.sender;
         // msg.value;
         // msg.data;

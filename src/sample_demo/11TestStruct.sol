@@ -23,13 +23,13 @@ contract TestStruct2 {
     struct Student {
         string name;
         uint8 age;
-        mapping(string => uint) scores;
-        // Student child; // 错误的写法，不能引用自身
+        mapping(string => uint256) scores;
     }
+    // Student child; // 错误的写法，不能引用自身
 
     struct School {
         Student[] students;
-        mapping(uint => Student) numbers;
+        mapping(uint256 => Student) numbers;
     }
 
     // 2.结构体变量声明与赋值
@@ -54,16 +54,13 @@ contract TestStruct2 {
     Person person4 = Person({account: address(0x0), name: "zhangsan", age: 18});
 
     function name2() public pure returns (Person memory) {
-        Person memory person5 = Person({
-            account: address(0x0),
-            name: "zhangsan",
-            age: 18
-        });
+        Person memory person5 = Person({account: address(0x0), name: "zhangsan", age: 18});
         return person5;
     }
 
     Person person6;
     // 2.4 以更新成员变量的方式给结构体变量赋值
+
     function updatePerson() public {
         person6.account = msg.sender;
         person6.age = 18;

@@ -4,12 +4,11 @@ pragma solidity 0.8.25;
 import "./BaseERC20.sol";
 
 contract TokenBank {
-
     mapping(address => uint256) deposits;
 
     BaseERC20 public erc20;
 
-    constructor (address tokenAddress) {
+    constructor(address tokenAddress) {
         erc20 = BaseERC20(tokenAddress);
     }
 

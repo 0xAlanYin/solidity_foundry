@@ -19,13 +19,11 @@ pragma solidity 0.8.25;
 // • receive / fallback 充当回调函数作⽤
 // • 回调函数：有转账了，告诉我（合约）⼀下
 contract TestFunction {
-    uint public count;
+    uint256 public count;
+
     constructor() {}
 
-    function functionName(
-        uint param1,
-        string memory param2
-    ) public view returns (uint) {
+    function functionName(uint256 param1, string memory param2) public view returns (uint256) {
         return 1;
     }
 

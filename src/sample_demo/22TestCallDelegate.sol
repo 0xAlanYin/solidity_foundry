@@ -1,7 +1,7 @@
 pragma solidity 0.8.25;
 
 contract Counter {
-    uint public counter;
+    uint256 public counter;
     address public sender;
 
     function count() public {
@@ -9,14 +9,11 @@ contract Counter {
         sender = msg.sender;
     }
 
-
-    fallback() external payable {
-    }
-
+    fallback() external payable {}
 }
 
 contract CallTest {
-    uint public counter;
+    uint256 public counter;
     address public sender;
 
     function callCount(Counter c) public {
@@ -30,10 +27,9 @@ contract CallTest {
     }
 
     function lowCallCount(address addr) public {
-        bytes memory methodData =abi.encodeWithSignature("count()");
+        bytes memory methodData = abi.encodeWithSignature("count()");
         addr.call(methodData);
         // addr.call{gas:1000}(methodData);
         // addr.call{gas:1000, value: 1 ether}(methodData);
     }
-
 }

@@ -7,7 +7,7 @@ contract GoodGas {
     // 如果变量值不变，使用 constant 节约 gas
     // 174139 gas no-constant
     // 150503 gas constant
-    uint256 public miniumUsd = 20 * 1e18;
+    uint256 public constant miniumUsd = 20 * 1e18;
 
     // 200274 gas  no-immutable
     // 150503 gas immutable
@@ -20,7 +20,7 @@ contract GoodGas {
     modifier onlyOwner() {
         // 174139 gas
         // require(msg.sender == owner, "Sender is not owner");
-        // 174125 gas
+        // 174125 gas 相比 require 更节省 gas
         if (msg.sender != owner) {
             revert NotOwner();
         }

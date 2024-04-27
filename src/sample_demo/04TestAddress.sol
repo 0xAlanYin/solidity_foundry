@@ -23,7 +23,7 @@ contract TestAddress {
     }
 
     function safeTransfer(address to, uint256 amount) public {
-        (bool success, ) = to.call{value: amount}(new bytes(0));
+        (bool success,) = to.call{value: amount}(new bytes(0));
         require(success, "TransferHelper:safeTransfer failed");
     }
 

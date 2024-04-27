@@ -8,9 +8,9 @@ contract TestOverflow {
         return y;
     }
 
-    function add2() pure public returns (uint8) {
+    function add2() public pure returns (uint8) {
         uint8 x = 250;
-        uint8 y =  6;
+        uint8 y = 6;
         return x + y;
     }
 }

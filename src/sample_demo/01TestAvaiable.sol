@@ -7,14 +7,15 @@ pragma solidity 0.8.25;
 // - external:外部访问
 // - internal: 内部、继承
 contract TestAvaiable {
-    uint public data;
+    uint256 public data;
+
     constructor() {}
 
-    function setData(uint x) internal {
+    function setData(uint256 x) internal {
         data = x;
     }
 
-    function cal(uint a) public pure returns (uint) {
+    function cal(uint256 a) public pure returns (uint256) {
         return a + 1;
     }
 }

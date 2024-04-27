@@ -22,10 +22,7 @@ contract Bank {
 
     // withdraw balance by admin
     function withdraw(uint256 amount) public virtual onlyOwner {
-        require(
-            amount <= address(this).balance,
-            "withdraw amount greater than balance"
-        );
+        require(amount <= address(this).balance, "withdraw amount greater than balance");
         payable(msg.sender).transfer(amount);
     }
 
@@ -48,7 +45,7 @@ contract Bank {
         return top3Users;
     }
 
-    receive() virtual external payable {
+    receive() external payable virtual {
         balances[msg.sender] = balances[msg.sender] + msg.value;
         updateTop3User(msg.sender);
     }

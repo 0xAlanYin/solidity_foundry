@@ -6,7 +6,6 @@ import "../src/week2/TokenBank.sol";
 import "../src/week2/BaseERC20.sol";
 
 contract TokenBankTest is Test {
-
     BaseERC20 erc20Token;
     TokenBank tokenBank;
 
@@ -45,7 +44,6 @@ contract TokenBankTest is Test {
         erc20Token.approve(address(tokenBank), 100000);
         tokenBank.deposit(100);
 
-
         tokenBank.withdraw(99);
         uint256 deposit = tokenBank.balanceOf(alice);
         assertEq(1, deposit, "alice amount deposit not eq 1");
@@ -62,5 +60,4 @@ contract TokenBankTest is Test {
         tokenBank.withdraw(101);
         vm.stopPrank();
     }
-
 }

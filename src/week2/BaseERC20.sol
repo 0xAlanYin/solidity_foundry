@@ -26,11 +26,7 @@ contract BaseERC20 {
     mapping(address => mapping(address => uint256)) allowances;
 
     event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(
-        address indexed owner,
-        address indexed spender,
-        uint256 value
-    );
+    event Approval(address indexed owner, address indexed spender, uint256 value);
 
     constructor() {
         // set name,symbol,decimals,totalSupply
@@ -45,10 +41,7 @@ contract BaseERC20 {
         return balances[_owner];
     }
 
-    function transfer(
-        address _to,
-        uint256 _value
-    ) public returns (bool success) {
+    function transfer(address _to, uint256 _value) public returns (bool success) {
         address owner = msg.sender;
 
         _transfer(owner, _to, _value);
@@ -57,14 +50,10 @@ contract BaseERC20 {
         return true;
     }
 
-    function transferFrom(
-        address _from,
-        address _to,
-        uint256 _value
-    ) public returns (bool success) {
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
         // get spender
         address _spender = msg.sender;
-       
+
         // update spender allowance
         _updateSpenderAllowance(_from, _spender, _value);
 
@@ -82,25 +71,19 @@ contract BaseERC20 {
         _approve(owner, spender, currentAllowance - value);
     }
 
-    function approve(
-        address _spender,
-        uint256 _value
-    ) public returns (bool success) {
+    function approve(address _spender, uint256 _value) public returns (bool success) {
         address _owner = msg.sender;
-        _approve(_owner,_spender, _value);
+        _approve(_owner, _spender, _value);
 
         emit Approval(msg.sender, _spender, _value);
         return true;
     }
 
-    function _approve(address owner, address spender,uint256 value) internal {
+    function _approve(address owner, address spender, uint256 value) internal {
         allowances[owner][spender] = value;
     }
 
-    function allowance(
-        address _owner,
-        address _spender
-    ) public view returns (uint256 remaining) {
+    function allowance(address _owner, address _spender) public view returns (uint256 remaining) {
         // 允许任何人查看一个地址可以从其它账户中转账的代币数量（allowance）
         return allowances[_owner][_spender];
     }
@@ -108,7 +91,7 @@ contract BaseERC20 {
     function _transfer(address from, address to, uint256 value) internal {
         uint256 amount = balances[from];
         require(amount >= value, "ERC20: transfer amount exceeds balance");
-        
+
         if (from == address(0)) {
             // 如果是零地址，总供应量增加
             totalSupply += value;

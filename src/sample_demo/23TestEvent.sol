@@ -8,14 +8,13 @@ pragma solidity 0.8.25;
 // • 使⽤关键字 emit 触发事件
 // • 事件中使⽤indexed修饰，表示对这个字段建⽴索引，⽅便外部对该字段过滤查找
 contract TestEvent {
+    mapping(address => uint256) balances;
 
-    mapping(address => uint) balances;
+    event Deposit(address indexed addr, uint256 amount);
 
-    event Deposit(address indexed addr,uint amount);
+    function deposit(uint256 amount) public {
+        balances[msg.sender] += amount;
 
-    function deposit(uint amount) public {
-        balances[msg.sender] +=  amount;
-        
         emit Deposit(msg.sender, amount);
     }
 }
