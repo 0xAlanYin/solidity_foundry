@@ -31,8 +31,6 @@ contract TokenBankHookTest is Test {
     function testTransferCallback_faild_when_transfer_more_than_user_balance() public {
         token.transfer(bob, 100);
         vm.startPrank(bob);
-
-        // ERC20InsufficientBalance(address, uint256, uint256)
         vm.expectRevert(
             abi.encodeWithSignature("ERC20InsufficientBalance(address,uint256,uint256)", bob, 100, 1000000)
         );
