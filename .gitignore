@@ -13,12 +13,11 @@ docs/
 # Dotenv file
 .env
 
-.idea
 out
 cache
 src/sample_demo/artifacts/*
 lib/*
 .states/*
 
-lib
+lib/
 .states
