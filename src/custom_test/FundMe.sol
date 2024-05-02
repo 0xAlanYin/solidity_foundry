@@ -83,7 +83,9 @@ contract FundMe {
         require(success);
     }
 
-    /** Getter Functions */
+    /**
+     * Getter Functions
+     */
 
     /**
      * @notice Gets the amount that an address has funded

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import "./MyToken.sol";
+import "./MyEIP2612.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
 
-contract TokenBank is ITokenReceiver {
+contract TokenBank {
     mapping(address => uint256) deposits;
 
     address public token;
@@ -14,21 +14,13 @@ contract TokenBank is ITokenReceiver {
     }
 
     function deposit(address user, uint256 amount) public {
-        MyToken(token).transferFrom(msg.sender, address(this), amount);
+        MyEIP2612(token).transferFrom(msg.sender, address(this), amount);
         deposits[user] += amount;
     }
 
     function withdraw(uint256 amount) public {
-        MyToken(token).transfer(msg.sender, amount);
+        MyEIP2612(token).transfer(msg.sender, amount);
         deposits[msg.sender] -= amount;
-    }
-
-    // tokensReceived 回调实现
-    function tokenReceived(address recipient, uint256 amount, bytes memory extraData) external returns (bool) {
-        // 只有合约才能调用
-        require(msg.sender == token, "no permission");
-        deposits[recipient] += amount;
-        return true;
     }
 
     function balanceOf(address user) public view returns (uint256) {

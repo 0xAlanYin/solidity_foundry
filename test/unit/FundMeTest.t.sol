@@ -120,7 +120,6 @@ contract FundMeTest is StdCheats, Test {
         assert((numberOfFunders + 1) * SEND_VALUE == fundMe.getOwner().balance - startingOwnerBalance);
     }
 
-
     function testWithdrawFromMultipleFunders_cheaper() public funded {
         uint160 numberOfFunders = 10;
         uint160 startingFunderIndex = 2;
