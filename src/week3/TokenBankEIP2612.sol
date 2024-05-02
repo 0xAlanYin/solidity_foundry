@@ -14,7 +14,7 @@ contract TokenBank {
     }
 
     function deposit(address user, uint256 amount) public {
-        MyEIP2612(token).transferFrom(msg.sender, address(this), amount);
+        MyEIP2612(token).transferFrom(user, address(this), amount);
         deposits[user] += amount;
     }
 

@@ -63,7 +63,7 @@ contract MyEIP2612Test is Test {
         token.permit(owner, spender, 100, deadline, v, r, s);
     }
 
-        function test_Permit() public {
+    function test_Permit() public {
         SignatureUtil.Permit memory permit = SignatureUtil.Permit({
             owner: owner,
             spender: spender,
@@ -76,15 +76,7 @@ contract MyEIP2612Test is Test {
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
 
-        token.permit(
-            permit.owner,
-            permit.spender,
-            permit.value,
-            permit.deadline,
-            v,
-            r,
-            s
-        );
+        token.permit(permit.owner, permit.spender, permit.value, permit.deadline, v, r, s);
 
         assertEq(token.allowance(owner, spender), 1e18);
         assertEq(token.nonces(owner), 1);
