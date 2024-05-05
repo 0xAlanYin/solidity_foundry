@@ -13,15 +13,15 @@ contract MyNFTMarket {
     // 记录 tokenId 对应的卖家
     mapping(uint256 => address) public tokenId2Seller;
 
-    address public eip2612Token;
+    address public erc20PermitToken;
 
     address public erc721Token;
 
     // 白名单
     mapping(uint256 => mapping(address => bool)) whitelist;
 
-    constructor(address _eip2612Token, address _erc721Token) {
-        eip2612Token = _eip2612Token;
+    constructor(address _erc20PermitToken, address _erc721Token) {
+        erc20PermitToken = _erc20PermitToken;
         erc721Token = _erc721Token;
     }
 
@@ -32,11 +32,10 @@ contract MyNFTMarket {
         tokenId2Seller[tokenId] = msg.sender;
     }
 
-    // approve before
     // buyNFT：实现购买 NFT 功能，用户转入所定价的 token 数量，获得对应的 NFT
     function buyNFT(uint256 tokenId) public {
         // 转移token: 买方给市场授权
-        IERC20(eip2612Token).transferFrom(msg.sender, tokenId2Seller[tokenId], tokenId2Price[tokenId]);
+        IERC20(erc20PermitToken).transferFrom(msg.sender, tokenId2Seller[tokenId], tokenId2Price[tokenId]);
 
         // 转移nft: 卖方给市场授权
         IERC721(erc721Token).safeTransferFrom(tokenId2Seller[tokenId], msg.sender, tokenId);
@@ -54,12 +53,15 @@ contract MyNFTMarket {
     }
 
     // 只有离线授权的白名单地址才可以购买 NFT
-    function permitBuy(uint256 tokenId, uint256 deadline, uint8 v, bytes32 r, bytes32 s) external {
+    function permitBuy(address owner, address spender, uint256 tokenId, uint256 deadline, uint8 v, bytes32 r, bytes32 s)
+        external
+    {
+        // 不在白名单的不允许购买
         if (!whitelist[tokenId][msg.sender]) {
             revert("not in whitelist, can not buy");
         }
 
-        IERC20Permit(eip2612Token).permit(msg.sender, address(this), tokenId2Price[tokenId], deadline, v, r, s);
+        IERC20Permit(erc20PermitToken).permit(owner, spender, tokenId2Price[tokenId], deadline, v, r, s);
         buyNFT(tokenId);
     }
 }
