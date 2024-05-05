@@ -3,7 +3,7 @@ pragma solidity 0.8.25;
 
 import {Test, console} from "forge-std/Test.sol";
 
-import {MyEIP2612} from "../src/week3/MyEIP2612.sol";
+import {MyEIP2612} from "../src/week3/day3/MyEIP2612.sol";
 import "./SignatureUtil.sol";
 
 contract MyEIP2612Test is Test {
