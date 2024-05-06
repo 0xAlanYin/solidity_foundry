@@ -31,5 +31,8 @@ contract CallTest {
         addr.call(methodData);
         // addr.call{gas:1000}(methodData);
         // addr.call{gas:1000, value: 1 ether}(methodData);
+
+        // bytes memory callData = abi.encodeWithSignature("add(uint256)", 1);
+        // addr.delegatecall(callData);
     }
 }
