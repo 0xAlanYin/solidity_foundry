@@ -75,7 +75,45 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
         list(tokenId, amount);
     }
 
-    function version() public pure returns (uint256) {
-        return 2;
+    error ExpiredSignature(uint256 deadline);
+    error InvalidSigner(address signer, address owner);
+
+    function listWithPermit(
+        address owner,
+        uint256 tokenId,
+        uint256 tokenPrice,
+        uint256 nonces,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external {
+        if (block.timestamp > deadline) {
+            revert ExpiredSignature(deadline);
+        }
+        bytes32 digest = caculateTypeDataHash(nonces, tokenId, tokenPrice, deadline);
+        address signer = ECDSA.recover(digest, v, r, s);
+        if (signer != owner) {
+            revert InvalidSigner(signer, owner);
+        }
+        list(tokenId, tokenPrice);
+    }
+
+    function caculateTypeDataHash(uint256 _nonces, uint256 _tokenId, uint256 _tokenPrice, uint256 deadline)
+        internal
+        pure
+        returns (bytes32)
+    {
+        return keccak256(abi.encodePacked("\x19\x01", _caculateStructHash(_nonces, _tokenId, _tokenPrice, deadline)));
+    }
+
+    function _caculateStructHash(uint256 _nonces, uint256 _tokenId, uint256 _tokenPrice, uint256 deadline)
+        internal
+        pure
+        returns (bytes32)
+    {
+        bytes32 structHash = keccak256(abi.encode(_nonces, _tokenId, _tokenPrice, deadline));
+
+        return structHash;
     }
 }

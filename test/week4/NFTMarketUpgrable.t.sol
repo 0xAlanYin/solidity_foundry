@@ -85,7 +85,5 @@ contract NFTMarketUpgrableTest is Test {
         // opts.unsafeSkipAllChecks = true;
         // Upgrade the proxy to a new version; NFTMarketV2
         Upgrades.upgradeProxy(address(proxy), "NFTMarketUpgrableV2.sol:NFTMarketV2", "", owner);
-
-        console.log("version:", NFTMarketV2(address(proxy)).version());
     }
 }
