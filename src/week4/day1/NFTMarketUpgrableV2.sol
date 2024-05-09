@@ -15,6 +15,10 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
     mapping(uint256 => address) public tokenSeller;
     address public token;
     address public nftToken;
+    bytes32 public constant STRUCT_TYPE_HASH =
+        keccak256("ListPermit(uint256 _nonces, uint256 _tokenId, uint256 _tokenPrice, uint256 deadline)");
+    bytes32 private constant TYPE_HASH =
+        keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -88,10 +92,11 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
 
     function caculateTypeDataHash(uint256 _nonces, uint256 _tokenId, uint256 _tokenPrice, uint256 deadline)
         internal
-        pure
         returns (bytes32)
     {
-        return keccak256(abi.encodePacked("\x19\x01", _caculateStructHash(_nonces, _tokenId, _tokenPrice, deadline)));
+        return MessageHashUtils.toTypedDataHash(
+            _buildDomainSeparator(), _caculateStructHash(_nonces, _tokenId, _tokenPrice, deadline)
+        );
     }
 
     function _caculateStructHash(uint256 _nonces, uint256 _tokenId, uint256 _tokenPrice, uint256 deadline)
@@ -99,8 +104,13 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
         pure
         returns (bytes32)
     {
-        bytes32 structHash = keccak256(abi.encode(_nonces, _tokenId, _tokenPrice, deadline));
-
+        bytes32 structHash = keccak256(abi.encode(STRUCT_TYPE_HASH, _nonces, _tokenId, _tokenPrice, deadline));
         return structHash;
+    }
+
+    function _buildDomainSeparator() private returns (bytes32) {
+        return keccak256(
+            abi.encode(TYPE_HASH, keccak256(bytes("fixName")), keccak256(bytes("1")), block.chainid, address(this))
+        );
     }
 }
