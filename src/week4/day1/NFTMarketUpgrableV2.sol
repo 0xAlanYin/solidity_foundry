@@ -60,24 +60,10 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
         IERC721(nftToken).transferFrom(address(this), msg.sender, tokenId);
     }
 
-    // 加⼊离线签名上架 NFT 功能⽅法（签名内容：tokenId， 价格），实现⽤户⼀次性使用 setApproveAll 给 NFT 市场合约，每个 NFT 上架时仅需使⽤签名上架。
-    function listWithPermit(bytes memory message, bytes memory signature, uint256 tokenId, uint256 amount) public {
-        // TODO
-        // 先验证签名是 msg.sender
-        bytes32 hash = MessageHashUtils.toEthSignedMessageHash(message);
-        address signer = ECDSA.recover(hash, signature);
-        require(msg.sender == signer, "invalid signature");
-
-        // setApprovalForAll 给 NFTMarket
-        IERC721(nftToken).setApprovalForAll(address(this), true);
-
-        // 上架 NFT
-        list(tokenId, amount);
-    }
-
     error ExpiredSignature(uint256 deadline);
     error InvalidSigner(address signer, address owner);
 
+    // 加⼊离线签名上架 NFT 功能⽅法（签名内容：tokenId， 价格），实现⽤户⼀次性使用 setApproveAll 给 NFT 市场合约，每个 NFT 上架时仅需使⽤签名上架。
     function listWithPermit(
         address owner,
         uint256 tokenId,
@@ -91,6 +77,7 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
         if (block.timestamp > deadline) {
             revert ExpiredSignature(deadline);
         }
+        // 先验证签名是 msg.sender
         bytes32 digest = caculateTypeDataHash(nonces, tokenId, tokenPrice, deadline);
         address signer = ECDSA.recover(digest, v, r, s);
         if (signer != owner) {
