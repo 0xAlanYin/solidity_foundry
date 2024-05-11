@@ -131,5 +131,17 @@ contract AirdopMerkleNFTMarketTest is Test {
         datas[0] = data;
         airdopMerkleNFTMarket.multicall(datas);
         vm.stopPrank();
+
+        // spener 购买
+        vm.startPrank(owner);
+        uint256 amount = 500;
+        // 将 owner, spender, permit.value, amount, deadline, v, r, s 转为 bytes[] calldata data 中的第一个元素
+        data = abi.encodeWithSelector(
+            airdopMerkleNFTMarket.permitPrePay.selector, owner, spender, permit.value, amount, deadline, v, r, s
+        );
+        datas = new bytes[](1);
+        datas[0] = data;
+        airdopMerkleNFTMarket.multicall(datas);
+        vm.stopPrank();
     }
 }
