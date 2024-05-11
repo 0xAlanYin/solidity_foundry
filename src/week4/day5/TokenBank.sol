@@ -5,6 +5,7 @@ pragma solidity 0.8.25;
 // 1.可以通过 Metamask 等钱包直接给 Bank 合约地址存款
 // 2.在 Bank 合约里记录了每个地址的存款金额
 // 3.用可迭代的链表保存存款金额的前 10 名用户
+// TODO(yinxing) 补充该合约的测试
 contract TokenBank {
     // 账户余额
     mapping(address => uint256) private _balances;
