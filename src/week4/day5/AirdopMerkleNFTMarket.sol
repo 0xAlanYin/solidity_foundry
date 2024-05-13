@@ -6,6 +6,7 @@ import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProo
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import { Multicall } from "@openzeppelin/contracts/utils/Multicall.sol";
 
 // 实现一个 AirdopMerkleNFTMarket 合约(假定 Token、NFT、AirdopMerkleNFTMarket 都是同一个开发者开发)，功能如下：
 // 1.基于 Merkel 树验证某用户是否在白名单中
@@ -49,23 +50,22 @@ contract AirdopMerkleNFTMarket is IERC721Receiver {
         require(amount >= tokenId2Price[tokenId] / 2, "low price");
         // 验证 nft 没有卖出
         require(IERC721(nft).ownerOf(tokenId) == address(this), "aleady selled");
-
         // 授权
         IERC20Permit(token).permit(owner, spender, tokenId, deadline, v, r, s);
+    }
+
+    // 实现 claimNFT
+    function claimNFT(bytes32[] calldata merkleProof, uint256 tokenId) external returns (bool) {
+        // 1.验证用户是否在白名单中
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
+
+        require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "AirdopMerkleNFTMarket: Invalid proof");
 
         // 转移 token
         IERC20(token).transfer(tokenId2Seller[tokenId], tokenId2Price[tokenId] / 2);
 
         // 转移 nft
         IERC721(nft).transferFrom(address(this), msg.sender, tokenId);
-    }
-
-    // 实现 claimNFT
-    function claimNFT(bytes32[] calldata merkleProof) external returns (bool) {
-        // 1.验证用户是否在白名单中
-        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
-
-        require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "AirdopMerkleNFTMarket: Invalid proof");
 
         emit AirdopMerkleNFTMarket_Claimed(msg.sender);
         return true;

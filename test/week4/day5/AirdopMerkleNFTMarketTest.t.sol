@@ -53,7 +53,7 @@ contract AirdopMerkleNFTMarketTest is Test {
         proof[1] = 0x66af34d373b909013012f47c2e8fcf962ed49c30d72ed525b8867e5fb5f9acbd;
 
         vm.startPrank(validUser);
-        bool verifySuccess = airdopMerkleNFTMarket.claimNFT(proof);
+        bool verifySuccess = airdopMerkleNFTMarket.claimNFT(proof, 0); // todo(yinxing) 更改这里的逻辑，修复测试
         assertTrue(verifySuccess, "verify failed");
         vm.stopPrank();
     }
@@ -63,8 +63,10 @@ contract AirdopMerkleNFTMarketTest is Test {
         bytes32[] memory proof = new bytes32[](2);
         proof[0] = 0x72155ab19f64defdca605292f85d05e62580c41852b1bff9f02bd9cf4c4ac1ee;
         proof[1] = 0x72155ab19f64defdca605292f85d05e62580c41852b1bff9f02bd9cf4c4ac1aa; // 无效的 proof
+
+        uint256 tokenId = 0;
         vm.expectRevert("AirdopMerkleNFTMarket: Invalid proof");
-        airdopMerkleNFTMarket.claimNFT(proof);
+        airdopMerkleNFTMarket.claimNFT(proof, tokenId);
     }
 
     // test permitPrePay
@@ -125,22 +127,14 @@ contract AirdopMerkleNFTMarketTest is Test {
         vm.stopPrank();
 
         vm.startPrank(validUser);
+        bytes[] memory datas = new bytes[](2);
         // 将 bytes32[] memory proof 转为 bytes[] calldata data 中的第一个元素
-        bytes memory data = abi.encodeWithSelector(airdopMerkleNFTMarket.claimNFT.selector, proof);
-        bytes[] memory datas = new bytes[](1);
-        datas[0] = data;
-        airdopMerkleNFTMarket.multicall(datas);
-        vm.stopPrank();
-
-        // spener 购买
-        vm.startPrank(owner);
+        datas[0] = abi.encodeWithSelector(airdopMerkleNFTMarket.claimNFT.selector, proof);
         uint256 amount = 500;
         // 将 owner, spender, permit.value, amount, deadline, v, r, s 转为 bytes[] calldata data 中的第一个元素
-        data = abi.encodeWithSelector(
+        datas[1] = abi.encodeWithSelector(
             airdopMerkleNFTMarket.permitPrePay.selector, owner, spender, permit.value, amount, deadline, v, r, s
         );
-        datas = new bytes[](1);
-        datas[0] = data;
         airdopMerkleNFTMarket.multicall(datas);
         vm.stopPrank();
     }
