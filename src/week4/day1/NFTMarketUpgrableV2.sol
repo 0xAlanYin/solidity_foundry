@@ -22,7 +22,7 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
     address public token;
     address public nftToken;
     bytes32 public constant STRUCT_TYPE_HASH =
-        keccak256("ListPermit(uint256 _nonces, uint256 _tokenId, uint256 _tokenPrice, uint256 deadline)");
+        keccak256("ListPermit(uint256 _nonces,uint256 _tokenId,uint256 _tokenPrice,uint256 deadline)");
     bytes32 private constant TYPE_HASH =
         keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
 
@@ -96,6 +96,8 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
         if (signer != owner) {
             revert InvalidSigner(signer, owner);
         }
+
+        IERC721(nftToken).setApprovalForAll(address(this), true);
         list(tokenId, tokenPrice);
     }
 
