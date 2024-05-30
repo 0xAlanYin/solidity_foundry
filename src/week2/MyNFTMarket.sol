@@ -10,6 +10,7 @@ import "./MyERC721.sol";
 contract MyNFTMarket {
     event MyNFTMarket_List(address indexed seller, uint256 indexed tokenId, uint256 price);
     event MyNFTMarket_NFT_buy(address indexed buyer, uint256 indexed tokenId, uint256 price);
+    event MyNFTMarket_tokenReceived(address indexed buyer, uint256 amount, bytes data);
 
     // 记录 tokenId 对应的售价
     mapping(uint256 => uint256) public tokenId2Price;
@@ -55,6 +56,21 @@ contract MyNFTMarket {
         erc721Token.safeTransferFrom(tokenId2Seller[tokenId], msg.sender, tokenId);
     }
 
+    // tokensReceived 回调实现
+    function tokenReceived(address buyer, uint256 amount, bytes memory data) external returns (bool) {
+        require(msg.sender == address(erc20Token), "only accept erc20 token");
+
+        uint256 tokenId = abi.decode(data, (uint256));
+        require(amount >= tokenId2Price[tokenId], "not enough token");
+        erc20Token.transfer(tokenId2Seller[tokenId], tokenId2Price[tokenId]);
+
+        erc721Token.safeTransferFrom(tokenId2Seller[tokenId], buyer, tokenId);
+
+        emit MyNFTMarket_tokenReceived(buyer, amount, data);
+
+        return true;
+    }
+
     function listV2(uint256 tokenId, uint256 price) public {
         address seller = msg.sender;
         require(erc721Token.ownerOf(tokenId) == seller, "not owner");
@@ -78,11 +94,16 @@ contract MyNFTMarket {
     }
 
     // tokensReceived 回调实现
-    function tokenReceived(address buyer, uint256 amount, bytes memory data) external returns (bool) {
-        uint256 tokenId = abi.decode(data, (uint256));
-        erc20Token.transfer(tokenId2Seller[tokenId], tokenId2Price[tokenId]);
+    function tokenReceivedV2(address buyer, uint256 amount, bytes memory data) external returns (bool) {
+        require(msg.sender == address(erc20Token), "only accept erc20 token");
 
-        erc721Token.safeTransferFrom(tokenId2Seller[tokenId], buyer, tokenId);
+        uint256 tokenId = abi.decode(data, (uint256));
+        require(amount >= tokenId2Price[tokenId], "not enough token");
+        require(erc721Token.ownerOf(tokenId) == address(this), "not owner");
+        erc20Token.transferFrom(buyer, tokenId2Seller[tokenId], tokenId2Price[tokenId]);
+        erc721Token.safeTransferFrom(address(this), buyer, tokenId);
+
+        emit MyNFTMarket_tokenReceived(buyer, amount, data);
         return true;
     }
 }

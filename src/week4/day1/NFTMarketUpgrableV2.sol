@@ -11,6 +11,12 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
 /// @custom:oz-upgrades-from src/week4/day1/NFTMarketUpgrable.sol:NFTMarket
 contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, OwnableUpgradeable {
+    error ExpiredSignature(uint256 deadline);
+    error InvalidSigner(address signer, address owner);
+
+    event NFTMarket_Listed(address indexed seller, uint256 tokenId, uint256 amount);
+    event NFTMarket_buy(address indexed buyer, uint256 tokenId, uint256 amount);
+
     mapping(uint256 => uint256) public tokenIdPrice;
     mapping(uint256 => address) public tokenSeller;
     address public token;
@@ -50,22 +56,25 @@ contract NFTMarketV2 is IERC721Receiver, Initializable, UUPSUpgradeable, Ownable
 
     // approve(address to, uint256 tokenId) first
     function list(uint256 tokenId, uint256 amount) public {
-        IERC721(nftToken).safeTransferFrom(msg.sender, address(this), tokenId, "");
+        address seller = msg.sender;
+        IERC721(nftToken).safeTransferFrom(seller, address(this), tokenId, "");
         tokenIdPrice[tokenId] = amount;
-        tokenSeller[tokenId] = msg.sender;
+        tokenSeller[tokenId] = seller;
+
+        emit NFTMarket_Listed(seller, tokenId, amount);
     }
 
     function buy(uint256 tokenId, uint256 amount) external {
         require(amount >= tokenIdPrice[tokenId], "low price");
 
         require(IERC721(nftToken).ownerOf(tokenId) == address(this), "aleady selled");
+        address buyer = msg.sender;
 
-        IERC20(token).transferFrom(msg.sender, tokenSeller[tokenId], tokenIdPrice[tokenId]);
-        IERC721(nftToken).transferFrom(address(this), msg.sender, tokenId);
+        IERC20(token).transferFrom(buyer, tokenSeller[tokenId], tokenIdPrice[tokenId]);
+        IERC721(nftToken).transferFrom(address(this), buyer, tokenId);
+
+        emit NFTMarket_buy(buyer, tokenId, amount);
     }
-
-    error ExpiredSignature(uint256 deadline);
-    error InvalidSigner(address signer, address owner);
 
     // 加⼊离线签名上架 NFT 功能⽅法（签名内容：tokenId， 价格），实现⽤户⼀次性使用 setApproveAll 给 NFT 市场合约，每个 NFT 上架时仅需使⽤签名上架。
     function listWithPermit(

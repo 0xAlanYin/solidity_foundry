@@ -6,7 +6,7 @@ import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProo
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
-import { Multicall } from "@openzeppelin/contracts/utils/Multicall.sol";
+import {Multicall} from "@openzeppelin/contracts/utils/Multicall.sol";
 
 // 实现一个 AirdopMerkleNFTMarket 合约(假定 Token、NFT、AirdopMerkleNFTMarket 都是同一个开发者开发)，功能如下：
 // 1.基于 Merkel 树验证某用户是否在白名单中
@@ -96,4 +96,5 @@ contract AirdopMerkleNFTMarket is IERC721Receiver {
     {
         return this.onERC721Received.selector;
     }
+
 }

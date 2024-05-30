@@ -4,6 +4,7 @@ pragma solidity 0.8.25;
 import "./MyERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract TokenBank {
     mapping(address => uint256) deposits;
@@ -31,8 +32,9 @@ contract TokenBank {
     ) external {
         // 先使用 IERC20Permit 接口的 permit 函数给调用方的用户进行授权
         IERC20Permit(erc20token).permit(owner, spender, amount, deadline, v, r, s);
+        
         // 然后调用 transferFrom 函数转账给 tokenBank,并增加 owner 余额
-        IERC20(erc20token).transferFrom(owner, address(this), amount);
+        SafeERC20.safeTransferFrom(IERC20(erc20token), owner, address(this), amount);
         deposits[owner] += amount;
     }
 
