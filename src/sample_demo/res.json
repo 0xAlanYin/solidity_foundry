@@ -1,0 +1,80 @@
+{
+  "success": true,
+  "error": null,
+  "results": {
+    "detectors": [
+      {
+        "elements": [
+          {
+            "type": "function",
+            "name": "setData",
+            "source_mapping": {
+              "start": 371,
+              "length": 62,
+              "filename_relative": "01TestAvaiable.sol",
+              "filename_absolute": "/Users/xingyin/vscode/01workspace/solidity_foundry/src/sample_demo/01TestAvaiable.sol",
+              "filename_short": "01TestAvaiable.sol",
+              "is_dependency": false,
+              "lines": [
+                14,
+                15,
+                16
+              ],
+              "starting_column": 5,
+              "ending_column": 6
+            },
+            "type_specific_fields": {
+              "parent": {
+                "type": "contract",
+                "name": "TestAvaiable",
+                "source_mapping": {
+                  "start": 295,
+                  "length": 229,
+                  "filename_relative": "01TestAvaiable.sol",
+                  "filename_absolute": "/Users/xingyin/vscode/01workspace/solidity_foundry/src/sample_demo/01TestAvaiable.sol",
+                  "filename_short": "01TestAvaiable.sol",
+                  "is_dependency": false,
+                  "lines": [
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21
+                  ],
+                  "starting_column": 1,
+                  "ending_column": 2
+                }
+              },
+              "signature": "setData(uint256)"
+            }
+          }
+        ],
+        "description": "TestAvaiable.setData(uint256) (01TestAvaiable.sol#14-16) is never used and should be removed\n",
+        "markdown": "[TestAvaiable.setData(uint256)](01TestAvaiable.sol#L14-L16) is never used and should be removed\n",
+        "first_markdown_element": "01TestAvaiable.sol#L14-L16",
+        "id": "3e257f35cfed0f1925ba92a37c57d6f7715e835c26038a0a895a406c92ce6844",
+        "check": "dead-code",
+        "impact": "Informational",
+        "confidence": "Medium"
+      },
+      {
+        "elements": [],
+        "description": "Version constraint 0.8.25 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)\n.\n It is used by:\n\t- 01TestAvaiable.sol#2\n",
+        "markdown": "Version constraint 0.8.25 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)\n.\n It is used by:\n\t- 01TestAvaiable.sol#2\n",
+        "first_markdown_element": "",
+        "id": "e684e7c82b3be7386a004b992f1c1165d3adbc2b30b77f4f37c39337cbd60d67",
+        "check": "solc-version",
+        "impact": "Informational",
+        "confidence": "High"
+      }
+    ]
+  }
+}

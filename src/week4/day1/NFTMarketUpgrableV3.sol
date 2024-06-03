@@ -23,7 +23,7 @@ contract NFTMarket is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         _disableInitializers();
     }
 
-    function initialize(address initializOwner_, address erc20Token_, address erc721Token_) initializer {
+    function initialize(address initializOwner_, address erc20Token_, address erc721Token_) public initializer {
         __Ownable_init(initializOwner_);
 
         __UUPSUpgradeable_init();
@@ -32,15 +32,15 @@ contract NFTMarket is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         s_erc721 = IERC721(erc721Token_);
     }
 
-    function _authorizeUpgrade(address) internal onlyOwner {}
+    function _authorizeUpgrade(address) internal override onlyOwner {}
 
     function listWithPermit(
-        adress owner,
+        address owner,
         uint256 tokenId,
         uint256 price,
         uint256 nonce,
         uint256 deadline,
-        bytes signature
+        bytes memory signature
     ) external {
         bytes32 digest = _caculteTypeDataHash(owner, tokenId, price, nonce, deadline);
         address signer = ECDSA.recover(digest, signature);
@@ -51,14 +51,14 @@ contract NFTMarket is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
     function _caculteTypeDataHash(address owner, uint256 tokenId, uint256 price, uint256 nonce, uint256 deadline)
         internal
-        returns (bytes32 memory)
+        returns (bytes32)
     {
         return MessageHashUtils.toTypedDataHash(
             _buildDomainSeparator(), _caculteStuctHash(owner, tokenId, price, nonce, deadline)
         );
     }
 
-    function _buildDomainSeparator() internal returns (bytes32 memory) {
+    function _buildDomainSeparator() internal returns (bytes32) {
         return keccak256(
             abi.encode(TYPE_HASH, keccak256(bytes("NFTMarket")), keccak256(bytes("1")), block.chainid, address(this))
         );
@@ -66,7 +66,7 @@ contract NFTMarket is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
     function _caculteStuctHash(address owner, uint256 tokenId, uint256 price, uint256 nonce, uint256 deadline)
         internal
-        returns (bytes32 memory)
+        returns (bytes32)
     {
         return keccak256(abi.encode(STRUCT_HASH, owner, tokenId, price, nonce, deadline));
     }
