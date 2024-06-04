@@ -65,7 +65,7 @@ contract TokenBank {
         return result;
     }
 
-    function _isUserExist(address user) internal returns (bool) {
+    function _isUserExist(address user) internal view returns (bool) {
         return _nextUsers[user] != address(0);
     }
 

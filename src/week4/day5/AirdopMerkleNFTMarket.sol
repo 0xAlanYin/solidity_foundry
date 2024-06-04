@@ -89,8 +89,9 @@ contract AirdopMerkleNFTMarket is IERC721Receiver {
         return results;
     }
 
-    function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data)
+    function onERC721Received(address /**operator*/, address /**from*/, uint256 /**tokenId*/, bytes calldata /**data*/)
         external
+        pure
         override
         returns (bytes4)
     {
