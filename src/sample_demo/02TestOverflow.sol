@@ -13,4 +13,8 @@ contract TestOverflow {
         uint8 y = 6;
         return x + y;
     }
+
+    function name(address addr) external view returns (uint256) {
+        return addr.balance;
+    }
 }

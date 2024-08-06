@@ -33,13 +33,13 @@ contract TestStruct2 {
     }
 
     // 2.结构体变量声明与赋值
-    // 2.1 仅声明变量而不赋值，此时会使用默认值创建结构体变量
     struct Person {
         address account;
         string name;
         uint8 age;
     }
 
+    // 2.1 仅声明变量而不赋值，此时会使用默认值创建结构体变量
     Person person1;
 
     // 2.2 按成员顺序（结构体声明时的顺序）赋值
