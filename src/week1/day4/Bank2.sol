@@ -13,7 +13,7 @@ contract Bank is Ownable {
 
     constructor(address owner) Ownable(owner) {}
 
-    receive() external payable {
+    receive() external payable virtual {
         // check
         uint256 amount = msg.value;
         require(amount > 0, "depoist amount must greater than 0");
@@ -37,7 +37,7 @@ contract Bank is Ownable {
         emit Withdrawed(msg.sender, balance);
     }
 
-    function _updateTop3User(address user, uint256 amount) private {
+    function _updateTop3User(address user, uint256 amount) internal {
         if (top3Users.length < 3) {
             top3Users.push(user);
         } else {
