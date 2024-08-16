@@ -25,4 +25,32 @@ contract PrimitivesDataType {
         }
         arr.pop();
     }
+
+    function name(address to) external {
+        to.call{value: 1 ether, gas: 2300}("");
+    }
+}
+
+contract Counter {
+    uint256 public count;
+
+    function get() external view returns (uint256) {
+        return count;
+    }
+
+    function inc() external returns (uint256) {
+        count += 1;
+        return count;
+    }
+
+    function getSelector(string calldata _funcName) external pure returns (bytes4) {
+        return bytes4(keccak256(bytes(_funcName)));
+    }
+}
+
+contract CreateTest {
+    function create2(bytes32 _salt) external {
+        Counter c = new Counter{salt: _salt}();
+        
+    }
 }
